@@ -47,7 +47,7 @@ class SASPServer {
     this.server = new Server(
       {
         name: 'sasp-mcp-server',
-        version: '1.0.0',
+        version: '0.1.0',
       },
       {
         capabilities: {

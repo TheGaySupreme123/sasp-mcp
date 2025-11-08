@@ -1,15 +1,25 @@
 # SASP - Shared Agent State Protocol
 
-An MCP (Model Context Protocol) server that provides edit-awareness and intent coordination for coding agents using Yjs.
+**v0.1.0** - _A vibe-coded MCP server for AI agents who need to learn to share_
+
+> "Too many coders, one codebase" - The eternal struggle, now with 100% more AI
+
+An MCP (Model Context Protocol) server that provides edit-awareness and intent coordination for coding agents using Yjs. Built with vibes, for vibes, by vibes.
+
+## What's This About?
+
+Look, we get it. You've got Claude over here trying to refactor `UserService.authenticate()`, and Claude's cousin is simultaneously adding OAuth to the same function. Chaos ensues. Merge conflicts rain from the sky. Your git history looks like a crime scene.
+
+**SASP** is here to teach these AI agents some manners. Think of it as a really passive-aggressive "OCCUPIED" sign for your code, but with more CRDTs and less bathroom humor.
 
 ## Overview
 
 SASP enables multiple AI coding agents to coordinate their edits in real-time by:
-- Broadcasting awareness states (what file/symbol each agent is working on)
-- Declaring edit intents that reserve scopes (files, symbols, or line ranges)
-- Detecting overlaps automatically before conflicts occur
-- Recording edit summaries for transparency
-- Keeping Git as the durable source of truth
+- 📢 **Broadcasting awareness states** - "Hey everyone, I'm editing UserService.authenticate, don't @ me"
+- 🎫 **Declaring edit intents** - Reserve your scope like a beach towel on a hotel chair
+- 🚨 **Detecting overlaps** - "Excuse me, I called dibs on that function"
+- 📝 **Recording summaries** - Document your chaos for posterity
+- 🎸 **Keeping Git real** - Because at the end of the day, Git is still the source of truth
 
 ## Features
 
@@ -457,12 +467,18 @@ sasp/
 - **Intent Validation**: Overlap checks are O(n) where n = active intents
 - **Yjs Sync**: In-memory CRDT with optional WebSocket replication
 
-## Limitations (MVP)
+## Vibe Check
 
-- `git.commit` is a stub (no actual git integration yet)
-- No LSP integration for symbol indexing (manual symbol names)
-- No WebSocket provider enabled by default (single instance)
-- No persistent storage (state lost on restart)
+This is **v0.1.0** - a vibe-coded MVP built by AI agents, for AI agents. It's tongue-in-cheek, it's experimental, and it's probably got bugs. But it works, and it solves a real problem: coordinating multiple AI coding agents without turning your codebase into a dumpster fire.
+
+**For vibe coders everywhere**: This is proof that you can ship something useful even when you're just vibing. No fancy planning, no enterprise architecture diagrams, just pure "let's solve this problem right now" energy. If you're building with AI agents and need them to stop stepping on each other's toes, give it a try.
+
+## Limitations (MVP - We're Honest About It)
+
+- `git.commit` is a stub (no actual git integration yet - we're saving that for 0.2)
+- No LSP integration for symbol indexing (you have to know your symbol names)
+- No WebSocket provider enabled by default (single instance only)
+- No persistent storage (state lost on restart - it's all vibes, no commitments)
 
 ## Roadmap
 
@@ -476,12 +492,15 @@ sasp/
 
 ## Contributing
 
-Contributions welcome! Please:
-1. Fork the repository
-2. Create a feature branch
-3. Add tests for new functionality
+Vibe coders welcome! This project was built in the spirit of "ship it and see what happens," so don't be shy:
+
+1. Fork the repository (or don't, just send vibes)
+2. Create a feature branch (or work directly on main if you're feeling spicy)
+3. Add tests for new functionality (we actually do believe in tests, surprisingly)
 4. Ensure all tests pass (`npm test`)
-5. Submit a pull request
+5. Submit a pull request with good vibes only
+
+**House rules**: Keep it real, keep it fun, and remember that merge conflicts are solved with communication, not combat.
 
 ## License
 

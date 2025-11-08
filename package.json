@@ -1,7 +1,7 @@
 {
   "name": "sasp-mcp-server",
-  "version": "1.0.0",
-  "description": "MCP server for edit-awareness and intent coordination among coding agents using Yjs",
+  "version": "0.1.0",
+  "description": "Vibe-coded MCP server for AI agents who need to learn to share. Because even AIs need a 'do not disturb' sign.",
   "type": "module",
   "main": "dist/index.js",
   "bin": {
