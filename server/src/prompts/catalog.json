@@ -1,0 +1,19 @@
+{
+  "prompts": [
+    {
+      "name": "plan-change",
+      "description": "Guide agent to plan a code change with awareness and intent management",
+      "file": "plan-change.md"
+    },
+    {
+      "name": "apply-diff",
+      "description": "Guide agent through applying a diff with awareness monitoring",
+      "file": "apply-diff.md"
+    },
+    {
+      "name": "negotiate-overlap",
+      "description": "Guide agent to negotiate overlapping edit intents with other agents",
+      "file": "negotiate-overlap.md"
+    }
+  ]
+}
