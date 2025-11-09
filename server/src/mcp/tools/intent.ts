@@ -214,6 +214,7 @@ export class IntentTools {
 
     if (args.fields.ttl_ms) {
       updatedIntent.ttl_ms = args.fields.ttl_ms;
+      updatedIntent.started_at = new Date().toISOString();
     }
 
     // Update in Yjs
@@ -280,8 +281,9 @@ export class IntentTools {
    * Handle intent expiration
    */
   private handleExpiration(lease_id: string, intent: IntentRecord): void {
+    const latestIntent = this.yjsDoc.getIntent(lease_id) ?? intent;
     const updatedIntent: IntentRecord = {
-      ...intent,
+      ...latestIntent,
       status: 'expired',
     };
 

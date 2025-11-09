@@ -55,7 +55,7 @@ export class OverlapDetector {
         return {
           overlaps: true,
           conflicting_lease_id: existing.lease_id,
-          reason: `Symbol '${newIntent.scope.symbol}' conflicts with range-based edit by agent ${existing.agent_id}`,
+          reason: `symbol '${newIntent.scope.symbol}' conflicts with range-based edit by agent ${existing.agent_id}`,
         };
       }
 

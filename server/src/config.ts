@@ -13,9 +13,23 @@ export interface ServerConfig {
 export const defaultConfig: ServerConfig = {
   port: 3000,
   wsPort: 1234,
-  token: process.env.SASP_AUTH_TOKEN || 'default-token-change-me',
+  token: (() => {
+    const token = process.env.SASP_AUTH_TOKEN || 'default-token-change-me';
+    if (token === 'default-token-change-me') {
+      console.warn('[WARNING] Using default token. Set SASP_AUTH_TOKEN for production!');
+    }
+    return token;
+  })(),
   roomId: process.env.SASP_ROOM_ID || 'sasp-default-room',
-  logLevel: (process.env.SASP_LOG_LEVEL as ServerConfig['logLevel']) || 'info',
+  logLevel: (() => {
+    const level = process.env.SASP_LOG_LEVEL as ServerConfig['logLevel'];
+    const validLevels: ServerConfig['logLevel'][] = ['debug', 'info', 'warn', 'error'];
+    if (level && !validLevels.includes(level)) {
+      console.warn(`[WARNING] Invalid SASP_LOG_LEVEL: ${level}. Using 'info'.`);
+      return 'info';
+    }
+    return level || 'info';
+  })(),
 };
 
 export function loadConfig(): ServerConfig {

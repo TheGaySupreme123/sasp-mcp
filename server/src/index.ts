@@ -274,7 +274,11 @@ class SASPServer {
         if ('agent_id' in args && 'session_id' in args) {
           const agentId = (args as any).agent_id as string;
           const sessionId = (args as any).session_id as string;
-          this.auth.registerSession(agentId, sessionId, token);
+          if (!this.auth.registerSession(agentId, sessionId, token)) {
+            return {
+              content: [{ type: 'text', text: JSON.stringify({ ok: false, error: 'Invalid token' }) }],
+            };
+          }
         }
 
         let result: any;
@@ -407,7 +411,7 @@ class SASPServer {
 
   async run() {
     this.log('info', 'Starting SASP MCP Server', {
-      version: '1.0.0',
+      version: '0.1.0',
       config: {
         roomId: this.config.roomId,
         logLevel: this.config.logLevel,
