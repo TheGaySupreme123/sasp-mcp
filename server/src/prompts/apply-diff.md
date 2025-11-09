@@ -3,7 +3,7 @@
 You have an active intent and are ready to apply your code changes. Follow these steps:
 
 ## Step 1: Monitor Awareness While Editing
-Keep the `awareness.subscribe` connection active to detect if other agents:
+Periodically check `resources.awareness.doc` to detect if other agents:
 - Declare overlapping intents (should be rejected by the server, but be aware)
 - Complete related edits that might affect your work
 - Update their awareness with relevant information

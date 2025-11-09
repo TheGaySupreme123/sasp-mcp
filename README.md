@@ -365,9 +365,10 @@ Agent B: { range: { startLine: 15, endLine: 25 } }  ❌
 Agent A: { symbol: "FunctionA" }
 Agent B: { symbol: "FunctionB" }  ✓
 
-// OK: Non-overlapping ranges
+// OK: Non-overlapping ranges (requires at least one-line gap)
 Agent A: { range: { startLine: 10, endLine: 20 } }
 Agent B: { range: { startLine: 21, endLine: 30 } }  ✓
+// Note: Adjacent or touching ranges (e.g., endLine matching another intent's startLine) are considered overlapping.
 
 // OK: Different files
 Agent A: { file: "A.ts", symbol: "MyFunction" }

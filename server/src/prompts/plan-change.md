@@ -2,8 +2,8 @@
 
 You are about to make a code change. Follow these steps to ensure coordination with other agents:
 
-## Step 1: Subscribe to Awareness
-Use the `awareness.subscribe` tool to start receiving real-time updates about other agents' activities.
+## Step 1: Monitor Awareness
+Periodically read the `resources.awareness.doc` snapshot to stay informed about other agents' activities.
 
 ## Step 2: Read Current State
 Use the `resources.awareness.doc` resource to get a snapshot of:

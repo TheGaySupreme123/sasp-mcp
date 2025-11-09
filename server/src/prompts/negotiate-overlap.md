@@ -39,7 +39,7 @@ The simplest approach - let the other agent finish first:
 }
 ```
 
-3. **Subscribe to intent events**: Watch for `intent.ended` or `intent.expired` for their lease_id
+3. **Poll the awareness snapshot**: Regularly check `resources.awareness.doc` for changes to their intent status (e.g., watch for their lease_id to end or expire)
 
 4. **Start your intent** once theirs ends
 
@@ -130,8 +130,8 @@ If you cannot resolve the overlap:
 4. You check their awareness: activity="editing", rationale="Adding OAuth support"
 5. Decision: Wait 2 minutes for them to finish
 6. You set awareness: activity="planning", rationale="Waiting for OAuth changes to complete before adding rate limiting"
-7. You subscribe to intent events
-8. 1 minute later: intent.ended event received for agent_abc's lease
+7. You periodically poll the awareness snapshot
+8. 1 minute later: you observe their intent marked as ended
 9. You start your intent successfully
 10. You proceed with your changes
 ```

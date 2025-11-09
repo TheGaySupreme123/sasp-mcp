@@ -4,7 +4,8 @@
  */
 
 import * as Y from 'yjs';
-import { Awareness } from 'y-protocols/awareness';
+import { Awareness, applyAwarenessUpdate } from 'y-protocols/awareness';
+import * as encoding from 'lib0/encoding';
 import { WebsocketProvider } from 'y-websocket';
 import { IntentRecord, EditSummary, AwarenessState, AwarenessSnapshot } from '../types.js';
 import { ServerConfig } from '../config.js';
@@ -16,7 +17,7 @@ export class YjsDocManager {
 
   // Y.js data structures
   private intentsMap: Y.Map<IntentRecord>;
-  private summariesIndex: Y.Map<EditSummary[]>;
+  private summariesIndex: Y.Map<Y.Array<EditSummary>>;
 
   constructor(private config: ServerConfig) {
     this.doc = new Y.Doc();
@@ -49,7 +50,17 @@ export class YjsDocManager {
    * Set local awareness state
    */
   setAwarenessState(clientId: number, state: AwarenessState): void {
-    this.awareness.setLocalState(state);
+    const encoder = encoding.createEncoder();
+    encoding.writeVarUint(encoder, 1);
+    encoding.writeVarUint(encoder, clientId);
+
+    const meta = this.awareness.meta.get(clientId);
+    const clock = meta ? meta.clock + 1 : 1;
+    encoding.writeVarUint(encoder, clock);
+    encoding.writeVarString(encoder, JSON.stringify(state));
+
+    const update = encoding.toUint8Array(encoder);
+    applyAwarenessUpdate(this.awareness, update, 'server');
   }
 
   /**
@@ -123,16 +134,20 @@ export class YjsDocManager {
    * Append an edit summary to a file's summary list
    */
   appendSummary(file: string, summary: EditSummary): void {
-    const summaries = this.summariesIndex.get(file) || [];
-    summaries.push(summary);
-    this.summariesIndex.set(file, summaries);
+    let summaries = this.summariesIndex.get(file);
+    if (!summaries) {
+      summaries = new Y.Array<EditSummary>();
+      this.summariesIndex.set(file, summaries);
+    }
+    summaries.push([summary]);
   }
 
   /**
    * Get all summaries for a file
    */
   getSummaries(file: string): EditSummary[] {
-    return this.summariesIndex.get(file) || [];
+    const summaries = this.summariesIndex.get(file);
+    return summaries ? summaries.toArray() : [];
   }
 
   /**
@@ -141,7 +156,7 @@ export class YjsDocManager {
   getAllSummaries(): Record<string, EditSummary[]> {
     const result: Record<string, EditSummary[]> = {};
     this.summariesIndex.forEach((summaries, file) => {
-      result[file] = summaries;
+      result[file] = summaries.toArray();
     });
     return result;
   }

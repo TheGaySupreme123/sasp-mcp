@@ -158,43 +158,40 @@ describe('Integration: Two Agents Coordination', () => {
     expect(summaries[1].agent_id).toBe('agent-b');
   });
 
-  it('should handle TTL expiration', (done) => {
-    // Set up expiration handler
+  it('should handle TTL expiration', async () => {
     let expirationCalled = false;
+    let observedLease: string | undefined;
+
     intentTools.setEventEmitter((event, data) => {
       if (event === 'intent.expired') {
         expirationCalled = true;
-        expect(data.lease_id).toBe(intentA.lease_id);
+        observedLease = data.lease_id;
       }
     });
 
-    // Agent A starts intent with short TTL
-    let intentA: any;
-    intentTools
-      .startIntent({
-        agent_id: 'agent-a',
-        session_id: 'session-1',
-        file: 'test.ts',
-        scope: { symbol: 'MyFunction' },
-        reason: 'Testing TTL',
-        planned_delta_hash: 'hash-a',
-        ttl_ms: 200, // 200ms
-      })
-      .then((result) => {
-        intentA = result;
-        expect(result.ok).toBe(true);
-      });
+    const intentA = await intentTools.startIntent({
+      agent_id: 'agent-a',
+      session_id: 'session-1',
+      file: 'test.ts',
+      scope: { symbol: 'MyFunction' },
+      reason: 'Testing TTL',
+      planned_delta_hash: 'hash-a',
+      ttl_ms: 200, // 200ms
+    });
 
-    // Wait for expiration
-    setTimeout(() => {
-      expect(expirationCalled).toBe(true);
+    expect(intentA.ok).toBe(true);
 
-      // Verify intent status is expired
-      const intent = yjsDoc.getIntent(intentA.lease_id);
-      expect(intent?.status).toBe('expired');
+    await new Promise<void>((resolve) => {
+      setTimeout(() => {
+        expect(expirationCalled).toBe(true);
+        expect(observedLease).toBe(intentA.lease_id);
 
-      done();
-    }, 400);
+        const intent = yjsDoc.getIntent(intentA.lease_id!);
+        expect(intent?.status).toBe('expired');
+
+        resolve();
+      }, 400);
+    });
   });
 
   it('should propagate awareness updates', async () => {
